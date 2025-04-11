@@ -1,0 +1,21 @@
+---
+- name: Install nginx web server
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  become: yes
+  tags: ['install']
+
+- name: Deploy a custom index page
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify: Restart nginx
+  tags: ['configure']
+
+- name: Start and enable nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+  tags: ['service']

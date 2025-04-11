@@ -1,0 +1,9 @@
+---
+- name: Install curl if not present
+  hosts: local
+  tasks:
+    - name: Ensure curl is installed
+      ansible.builtin.apt:
+        name: curl
+        state: present
+      when: ansible_facts.packages['curl'] is not defined

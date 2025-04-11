@@ -1,0 +1,10 @@
+---
+- name: Debugging example
+  hosts: local
+  become: true
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Show package installation status
+      ansible.builtin.debug:
+        msg: "Package {{ package_name }} installed!"

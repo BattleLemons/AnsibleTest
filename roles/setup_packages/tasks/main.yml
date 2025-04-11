@@ -1,0 +1,8 @@
+---
+- name: Install vim and curl
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - vim
+    - curl

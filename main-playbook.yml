@@ -1,0 +1,6 @@
+---
+- name: Use roles to organize tasks
+  hosts: local
+  become: true
+  roles:
+    - setup_packages
