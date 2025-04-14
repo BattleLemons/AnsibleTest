@@ -1,0 +1,33 @@
+---
+- name: Deploy application
+  hosts: all
+  vars_files:
+    - ../group_vars/all/vault.yml
+  tasks:
+    - name: Ensure DB user exists
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        host: localhost
+        state: present
+
+- name: Configure Database Servers
+  hosts: db
+  become: yes
+  roles:
+    - db
+
+- name: Configure Web Servers
+  hosts: web
+  become: yes
+  vars:
+    web_title: "My Ansible Managed Site"
+  roles:
+    - web
+    - app
+
+- name: Configure Load Balancer
+  hosts: loadbalancer
+  become: yes
+  roles:
+    - loadbalancer

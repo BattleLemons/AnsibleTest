@@ -1,0 +1,9 @@
+2025-04-14 10:29:24,570 p=8963 u=oss n=ansible | [WARNING]: Error getting vault password file (default): The vault password file /home/oss/.vault was not found
+
+2025-04-14 10:29:24,570 p=8963 u=oss n=ansible | ERROR! The vault password file /home/oss/.vault was not found
+2025-04-14 10:29:43,279 p=9024 u=oss n=ansible | [WARNING]: Error getting vault password file (default): The vault password file /home/oss/.vault was not found
+
+2025-04-14 10:29:43,280 p=9024 u=oss n=ansible | ERROR! The vault password file /home/oss/.vault was not found
+2025-04-14 10:30:30,983 p=9191 u=oss n=ansible | ERROR! group_vars/all/vault.yml exists, please use 'edit' instead
+2025-04-14 10:30:42,839 p=9230 u=oss n=ansible | ERROR! input is not vault encrypted data.  for /home/oss/ansible-demo/group_vars/all/vault.yml
+2025-04-14 10:31:16,855 p=9335 u=oss n=ansible | Encryption successful
