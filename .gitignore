@@ -1,6 +1,7 @@
 .vault
 .vault_pass.txt
 vault_password.txt
+group_vars/
 
 id_rsa
 id_rsa.pub
