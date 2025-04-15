@@ -1,6 +1,11 @@
 ---
-- name: Use roles to organize tasks
+- name: Install a package using a variable
   hosts: local
   become: true
-  roles:
-    - setup_packages
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Ensure the package is installed
+      ansible.builtin.apt:
+        name: "{{ package_name }}"
+        state: present
