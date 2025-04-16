@@ -1,0 +1,55 @@
+name: Ansible CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint Playbooks and YAML Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint yamllint
+
+      - name: Lint Ansible Playbooks
+        run: ansible-lint playbooks/*.yml
+
+      - name: Lint YAML files with yamllint
+        run: yamllint .
+
+  syntax_check:
+    name: Ansible Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
+
+      - name: Run Syntax Check on Playbooks
+        run: |
+          for file in playbooks/*.yml; do
+            echo "Checking syntax for $file"
+            ansible-playbook --syntax-check "$file"
+          done
