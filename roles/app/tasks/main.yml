@@ -6,8 +6,9 @@
       - python3-venv
       - python3-pip
     state: present
-  become: yes
-  tags: ['install']
+  become: true
+  tags:
+    - install
 
 - name: Create app directory
   ansible.builtin.file:
@@ -15,73 +16,97 @@
     state: directory
     owner: "{{ app_user }}"
     mode: '0755'
-  become: yes
-  tags: ['configure']
+  become: true
+  tags:
+    - configure
 
 - name: Create a Python virtual environment in the app directory
-  ansible.builtin.command: python3 -m venv {{ app_directory }}/venv
+  ansible.builtin.command:
+    cmd: >
+      python3 -m venv
+      {{ app_directory }}/venv
   args:
     creates: "{{ app_directory }}/venv/bin/activate"
-  become: yes
-  tags: ['install']
+  become: true
+  tags:
+    - install
 
 - name: Upgrade pip in the virtual environment
-  ansible.builtin.command: "{{ app_directory }}/venv/bin/pip install --upgrade pip"
-  become: yes
-  tags: ['install']
+  ansible.builtin.command:
+    cmd: >
+      {{ app_directory }}/venv/bin/pip
+      install --upgrade pip
+  become: true
+  tags:
+    - install
 
 - name: Install Flask via pip in virtual environment
   ansible.builtin.pip:
     name: Flask
     virtualenv: "{{ app_directory }}/venv"
     virtualenv_python: python3
-  become: yes
-  tags: ['install']
+  become: true
+  tags:
+    - install
 
 - name: Deploy Flask app code
   ansible.builtin.template:
     src: app.py.j2
     dest: "{{ app_directory }}/app.py"
-  become: yes
-  tags: ['configure']
+  become: true
+  tags:
+    - configure
 
 - name: Install Gunicorn via pip in virtual environment
   ansible.builtin.pip:
     name: gunicorn
     virtualenv: "{{ app_directory }}/venv"
     virtualenv_python: python3
-  become: yes
-  tags: ['install']
+  become: true
+  tags:
+    - install
 
 - name: Start the Flask app with Gunicorn
-  ansible.builtin.command: >
-    {{ app_directory }}/venv/bin/gunicorn --bind 0.0.0.0:{{ app_port }} app:app --daemon
+  ansible.builtin.command:
+    cmd: >
+      {{ app_directory }}/venv/bin/gunicorn
+      --bind 0.0.0.0:{{ app_port }}
+      app:app
+      --daemon
   args:
     chdir: "{{ app_directory }}"
-  become: yes
-  tags: ['service']
+  become: true
+  tags:
+    - service
 
 - name: Kill existing Gunicorn processes (if any)
-  ansible.builtin.shell: "pkill gunicorn || true"
-  become: yes
-  tags: ['service']
+  ansible.builtin.shell: |
+    pkill gunicorn || true
+  become: true
+  tags:
+    - service
 
 - name: Deploy the systemd service file for the Flask app
   ansible.builtin.template:
     src: app.service.j2
     dest: /etc/systemd/system/app.service
-  become: yes
-  tags: ['service']
+  become: true
+  tags:
+    - service
 
 - name: Reload systemd daemon to read the new service file
-  ansible.builtin.command: systemctl daemon-reload
-  become: yes
-  tags: ['service']
+  ansible.builtin.command:
+    cmd: systemctl daemon-reload
+  become: true
+  tags:
+    - service
 
 - name: Enable and start the Flask app service
   ansible.builtin.systemd:
     name: app.service
-    enabled: yes
+    enabled: true
     state: started
-  become: yes
-  tags: ['service']
+  become: true
+  tags:
+    - service
+

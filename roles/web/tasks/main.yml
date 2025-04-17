@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: nginx
     state: present
-  become: yes
+  become: true
   tags: ['install']
 
 - name: Deploy a custom index page
@@ -17,5 +17,5 @@
   ansible.builtin.service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
   tags: ['service']
