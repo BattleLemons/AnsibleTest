@@ -5,7 +5,7 @@
     - ../group_vars/all/vault.yml
   tasks:
     - name: Ensure DB user exists
-      mysql_user:
+      ansible.builtin.mysql_user:
         name: "{{ db_user }}"
         password: "{{ db_password }}"
         host: localhost
@@ -13,13 +13,13 @@
 
 - name: Configure Database Servers
   hosts: db
-  become: yes
+  become: true
   roles:
     - db
 
 - name: Configure Web Servers
   hosts: web
-  become: yes
+  become: true
   vars:
     web_title: "My Ansible Managed Site"
   roles:
@@ -28,6 +28,6 @@
 
 - name: Configure Load Balancer
   hosts: loadbalancer
-  become: yes
+  become: true
   roles:
     - loadbalancer
