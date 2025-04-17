@@ -8,8 +8,6 @@ id_rsa.pub
 *.pem
 *.key
 
-ansible.cfg
-
 inventory.ini
 
 .env
